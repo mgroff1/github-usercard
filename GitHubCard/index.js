@@ -48,7 +48,7 @@
   luishrd
   bigknell
 */
-let gitUsers = [
+let gitUsers = [ 
   'mgroff1',
   'wes-white',
   'chrisbonifacio',
