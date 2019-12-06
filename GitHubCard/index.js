@@ -48,21 +48,27 @@
   luishrd
   bigknell
 */
-let gitUsers = [ 
+
+
+let gitUsers = [
   'mgroff1',
   'wes-white',
   'chrisbonifacio',
   'mngmay',
   'jquery',
   'google'
-]
+];
 
+// axios.get(`https://api.github.com/users/${user}`)
+
+// let gitRepoData = axios.get(`https://api.github.com/repos/:${owner}/:repo/stats/contributions`)
 gitData = user => {
-  axios.get(`https://api.github.com/users/${user}`)
+    axios.get(`https://api.github.com/users/${user}`)
     .then(userdata => {
       console.log(userdata)
       gitCards(userdata.data)
     })
+
 }
 
 gitUsers.forEach(user => {
@@ -73,22 +79,67 @@ const gitCards = user => {
   let entry = document.querySelector('.cards')
   let newCard = document.createElement('div')
 
-  newCard.innerHTML = `
-  <div class="card">
-  <img src=${user.avatar_url} />
-  <div class="card-info">
-    <h3 class="name">${user.name}</h3>
-    <p class="username">${user.login}</p>
-    <p>Location: ${user.location}</p>
-    <p>Profile:
-      <a href=${user.html_url}>${user.html_url.toString()}</a>
-    </p>
-    <p>Followers: ${user.followers}</p>
-    <p>Following: ${user.following}</p>
-    <p>Bio: ${user.bio}</p>
-  </div>
-</div>`
+//
+//   newCard.innerHTML = `
+//   <div class="card">
+//   <img src=${user.avatar_url} />
+//   <div class="card-info">
+//     <h3 class="name">${user.name}</h3>
+//     <p class="username">${user.login}</p>
+//     <p>Location: ${user.location}</p>
+//     <p>Profile:
+//       <a href=${user.html_url}>${user.html_url.toString()}</a>
+//     </p>
+//     <p>Followers: ${user.followers}</p>
+//     <p>Following: ${user.following}</p>
+//     <p>Bio: ${user.bio}</p>
+//   </div>
+// </div>`
 
-  entry.appendChild(newCard)
+  let creator = (ele, attributes, ...children) => {
+    const el = document.createElement(ele)
 
+    for (key in attributes) {
+      el.setAttribute(key, attributes[key])
+    }
+
+    children.forEach(child => {
+      if (typeof child === 'string') {
+        el.appendChild(document.createTextNode(child))
+      } else {
+        el.appendChild(child)
+      }
+    })
+
+    return el
+  }
+
+  let acard = creator('div',{class:'card'},creator('img',{src:user.avatar_url}));
+  let bcard = creator('span',{class:'card-info'},creator('h3',{class:'name'},`${user.name}`));
+  let ccard = creator('div',{class:' '},creator('p',{class:'username'},`${user.login}`),
+creator('p',{},`Location: ${user.location}`),creator('p',{},
+creator('a',{href:user.html_url},user.html_url.toString())),creator('p',{},`Followers: ${user.followers}`),
+creator('p',{},`Following: ${user.following}`));
+  // creator('p',{},"Profile:"),creator('a',{href:`user.html_url`}),user.followers,user.following))
+ entry.appendChild(acard);
+ acard.appendChild(bcard);
+ bcard.appendChild(ccard);
 }
+//
+// let acc = document.createElement('button');
+// let panel = document.createElement('div');
+// let i;
+//   entry.appendChild(newCard);
+//   (`https://api.github.com/repos/:${user}/:repo/stats/contributions`)
+// for (i = 0; i < acc.length; i++) {
+//   acc[i].addEventListener("click", function() {
+//     this.classList.toggle("active");
+//     panel = this.nextElementSibling;
+//     if (panel.style.display === "block") {
+//       panel.style.display = "none";
+//     } else {
+//       panel.style.display = "block";
+//     }
+//   })
+// }
+// }
